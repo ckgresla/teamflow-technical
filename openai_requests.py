@@ -9,13 +9,13 @@ warnings.filterwarnings("ignore")
 
 
 # Configure Tokens + OpenAI's API Endpoints
-openai_auth_token = os.getenv("CKG_OPENAI_API_TOKEN") 
+openai_auth_token = os.environ.get("CKG_OPENAI_API_TOKEN")
 OPENAI_API_URL = "https://api.openai.com/v1/completions"
 OPENAI_EMBEDDINGS_URL = "https://api.openai.com/v1/embeddings"
 
 
 question_parse_prompt = """
-Your job is to parse transcripts of client calls at a software company in order to extract relevant questions for us to address with our clients, given a sequence of "Input_Text" please identify any questions, relevant to software or the company, by repeating them on new lines. If the client does not ask any questions that are relevant to software or technology; please write `NO_QUESTIONS` to help us understand the transcripts.
+Your job is to parse transcripts of client calls at a software company in order to extract relevant questions for us to address with our clients, given a sequence of "Input_Text" please identify any questions, relevant to software or the company, by repeating them on new lines. If the client does not ask any questions that are relevant to software or technology; please write `NO_QUESTIONS` to help us understand the transcripts. Additionally, if the transcription contains only questions related to small talk and does not contain any relevant questions to software or technology, please write `NO_QUESTIONS` for these entries as well.
 
 ###
 Input_Text: 
@@ -97,6 +97,11 @@ def get_completion(input_text: str, prompt=None, max_tokens=1000, model="text-da
 
     return generation
 
+
+# Wrapper for the Requests function w specific prompt
+def get_questions_gpt(text: str):
+    text = text + "\n"  #newline so model doesn't continue the sequence of text
+    return get_completion(text, prompt=question_parse_prompt)
 
 
 if __name__ == "__main__":
