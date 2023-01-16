@@ -1,4 +1,4 @@
-# Controller for Summarization Endpoint
+# Controller for Summarization & Next Steps Generation
 import os
 import time
 
@@ -12,28 +12,32 @@ from download_hf_models import BrioSummarizer
 brio = BrioSummarizer()
 
 
-class SummaryGenerator():
+class NextStepsEndpoint():
 
     # Generate Summaries for given inputs
-    def generate_summary(self, input_text):
+    def generate_summary(self, input_text: list)-> list:
         summary_text = brio.summarize(input_text) #expects a string, not list of strings
-        return brio.bpf(summary_text) #returns bpf'd output, can swap for below
+        return brio.bpf(summary_text) #returns bpf'd output, can swap for below -- a list of results
         # return summary_text #returns paragraph-esque summary
 
 
+    # Main Method -- expects a transcript string as in request_data
     def post(self):
-        request_data = request.get_json() #expect following vars in the request
 
         # Key for Text that needs to get summarized
-        input_text = request_data.get("input_text")
+        # request_data = request.get_json() #expect following vars in the request
+        # input_text = request_data.get("input_text")
+        input_text = sample_txt #TODO: comment out the above and delete this -- used for testing the endpoint locally
+        input_tokens = brio.tokenizer.tokenize(input_text) #get tokens for input
 
         # Check Length, Trim if longer than max context for Model
-        print("Lengths of Input & Limit", len(input_text), brio.max_length)
-        if len(input_text) >= brio.max_length:
+        print("Lengths of Input & Model Limit", len(input_tokens), brio.max_length)
+        if len(input_tokens) >= brio.max_length:
             print("Webpage Content too long for Model, trimming into Sequences")
-            input_text = [input_text] #need figure out a better way to truncate long input sequences (currently model reads up to max context and summarizes that)
+            # input_text = (input_tokens[i:i + brio.max_length] for i in range(0, len(input_tokens), brio.max_length))
+            input_text = list((input_tokens[i:i + brio.max_length] for i in range(0, len(input_tokens), brio.max_length)))
         else:
-            input_text = [input_text] #list of 1 string to summarize
+            input_text = [input_tokens] #whole transcript fits in context
 
         summarized_text = [] #to hold the summary strings
         sequence_count = 0 #count of sequences to summarize
@@ -81,6 +85,5 @@ class SummaryGenerator():
         elif request.method == "POST":
             resp = self.post()
             return resp
-
 
 

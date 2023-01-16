@@ -95,9 +95,17 @@ class BrioSummarizer():
                 self.model = PegasusForConditionalGeneration.from_pretrained('Yale-LILY/brio-xsum-cased')
                 print("") #newline after completing model load
 
+    # Split Sequences into Summarizable Chunks
+    def sequence_splitter(self, transcript: str):
+        result = self.tokenizer.tokenize(transcript)
+
+        return result
+
     # Generate Summary
     def summarize(self, article):
-        inputs = self.tokenizer([article], max_length=self.max_length, return_tensors="pt", truncation=True)
+        print("article len: ", len(article))
+        print(article, "\n\n\n\n\n\n\n\n\n\n\n")
+        inputs = self.tokenizer(article, max_length=self.max_length, return_tensors="pt", padding=True, truncation=True)
         inputs.to(self.device) #gofast
         self.model.to(self.device) #gofast
         summary_ids = self.model.generate(inputs["input_ids"])
@@ -121,4 +129,9 @@ if __name__ == "__main__":
 
     # Summarization Model
     BRIO = BrioSummarizer()
-    model_artifacts_download(BRIO)
+    # model_artifacts_download(BRIO)
+    txt = "TESTING !@#" * 320
+
+    out = BRIO.sequence_splitter(txt)
+    print(len(out))
+

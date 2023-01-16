@@ -1,4 +1,5 @@
 *.docx
 transcripts/
 *.swp
+*__pycache__*
 models

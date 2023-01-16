@@ -20,17 +20,16 @@ def health():
     else:
         return jsonify({'Error':"Sorry, the '/health' endpoint accepts GETs"})
 
-# Summarization Handler
-from controllers.summarizers import SummaryGenerator
-SG = SummaryGenerator()
-app.add_url_rule("/summarize", "summarize", SG.request_handler, methods=["GET", "POST"])
+# Next Steps Endpoint -- given transcript, generate the next steps bullet point list
+from controllers.summarizers import NextStepsEndpoint
+NS = NextStepsEndpoint()
+app.add_url_rule("/next_steps", "next_steps", NS.request_handler, methods=["GET", "POST"])
 
-# Question Extraction Endpoint
-# from controllers.embeddings import Longformer_Endpoint
+# Question Extraction Endpoint -- given transcript, parse our relevant client questions
 from controllers.question_extraction import QuestionExtractionEndpoint
 QE = QuestionExtractionEndpoint()
-# app.add_url_rule("/extract_questions", "extract_questions", QE.request_handler, methods=["GET", "POST"])
 app.add_url_rule("/extract_questions", "extract_questions", QE.request_handler, methods=["POST"])
+
 
 # Run App on Configured Port
 if __name__ == '__main__':
