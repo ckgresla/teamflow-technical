@@ -39,6 +39,7 @@ def transcript_stats(script: str=None):
     stats["n_people"] = len(stats) #number of folks in transcription str
     return data, stats
 
+
 # Get Unique Lines in Transcript
 def transcript_lines(script: str):
     # Case When script is path on disk
@@ -54,6 +55,7 @@ def transcript_lines(script: str):
     data = [i for i in data if i != ""]
     return data
 
+
 # Get all lines said by clients -- pass these for question checking
 def parse_client_lines(transcript_lines: list):
     speakers = {}
@@ -68,6 +70,7 @@ def parse_client_lines(transcript_lines: list):
 
     return speakers
 
+
 # Get a Dict of Clients and their respective & relevant questions 
 def parse_client_questions(client_trancsripts: dict):
     qcs = {client: [] for client in client_trancsripts}
@@ -76,5 +79,11 @@ def parse_client_questions(client_trancsripts: dict):
             result = get_questions_gpt(line)
             if result != "NO_QUESTIONS": 
                 result = result.replace("NO_QUESTIONS", "")
-                qcs[client].append(result)
+                results = result.split("\n")
+                for res in results:
+                    if res == "" or "###" in res or "input_text" in res.lower():
+                        pass
+                    else:
+                        res = res.strip()
+                        qcs[client].append(res)
     return qcs

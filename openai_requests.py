@@ -93,7 +93,13 @@ def get_completion(input_text: str, prompt=None, max_tokens=1000, model="text-da
     # Assumes Generation will not be longer than max sequence len
     response = requests.post(OPENAI_API_URL, json=payload, headers=headers, verify=False)
     response_data = response.json() #get JSON back from response object
-    generation = response_data["choices"][0]['text'].strip()
+    try:
+        generation = response_data["choices"][0]['text'].strip()
+    except Exception as E:
+        print(f"Error in Generation: {E}")
+        generation = "NO_QUESTIONS" #if cannot parse, return no questions
+
+    print(generation)
 
     return generation
 
