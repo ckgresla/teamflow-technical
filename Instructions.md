@@ -38,9 +38,9 @@ As a bonus you may wish to also find:
 Write your code in the language and environment of your choice. A running version of your code should be accessible for demonstration purposes.
 
 Provide:
-A link to your code repository -- create a github repo (private or public depending on what Github's permissions are -- can private repos be "unlisted" or viewable via link?)
-A link to your deployed API -- push up with ngrok (from ArchBox) | Deploy with some service like heroku
-Any special instructions needed to execute your code -- Technical MD file (`readme` in the repo)
+A link to your code repository
+A link to your deployed API 
+Any special instructions needed to execute your code 
 
 
 You should be prepared to discuss the following at your technical interview:
