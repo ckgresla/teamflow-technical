@@ -7,6 +7,7 @@ endpoint = '/extract_questions'
 endpoint = '/next_steps'
 
 url = "http://localhost:5003" + endpoint
+url = "https://88ed-207-237-201-41.ngrok.io" + endpoint #ngrok url
 
 
 # Sample Transcript for a Request

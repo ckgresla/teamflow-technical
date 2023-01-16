@@ -4,7 +4,7 @@
 
 
 ## Deployed API
-I ended up deploying the system for question extraction + next step generation via a containerized flask app on a local desktop, making it public with `ngrok`, the deployed system should be live at- 
+I ended up deploying the system for question extraction + next step generation via a containerized flask app on a local desktop, making it public with `ngrok`, the deployed system should be live at- https://88ed-207-237-201-41.ngrok.io
   * You can invoke the functions (addressed in questions 1 & 2 in the `Instruction.md` file) via POSTing to the Above URL at either;
     1. `/extract_questions`
     2. `/next_steps`
