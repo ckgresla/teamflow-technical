@@ -21,7 +21,7 @@ def health():
         return jsonify({'Error':"Sorry, the '/health' endpoint accepts GETs"})
 
 # Next Steps Endpoint -- given transcript, generate the next steps bullet point list
-from controllers.summarizers import NextStepsEndpoint
+from controllers.next_steps import NextStepsEndpoint
 NS = NextStepsEndpoint()
 app.add_url_rule("/next_steps", "next_steps", NS.request_handler, methods=["GET", "POST"])
 
