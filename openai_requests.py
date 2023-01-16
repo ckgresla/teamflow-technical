@@ -30,6 +30,20 @@ Input_Text:
 """
     #just insert the text we want classified to the end of prompt
 
+summary_generation_prompt = """
+For each provided Transcript, please return a series of clear, factual and concise Bullet Points that summarize the Transcript using only information that is present in the transcript and relevant to technology and the client's interests or concerns with respect to our products.
+
+###
+Transcript: 
+"""
+
+next_steps_prompt = """
+As a very skilled, honest and insightful member of our team, your job is to review a series of bullet points from transcripts of our meetings and determine useful next steps for our clients as per our prior conversation with them. Be sure to focus on only what is provided in the summary for the suggested next steps as we want to stay on topic in the context of our relationships with our clients.
+
+###
+Transcript:
+"""
+
 
 # Get Embeddings from OpenAI
 def get_embedding(text, model="text-search-ada-doc-001"):
@@ -109,6 +123,17 @@ def get_questions_gpt(text: str):
     text = text + "\n"  #newline so model doesn't continue the sequence of text
     return get_completion(text, prompt=question_parse_prompt)
 
+def get_summary_gpt(text: str):
+    text = text + "\n\nBullet Points:\n" 
+    return get_completion(text, prompt=summary_generation_prompt)
+
+def get_steps_gpt(text: str):
+    """
+    Given a summarized transcript (from `get_summary_gpt`) return a series of suggested next steps
+    """
+    text = text + "\n"
+    return get_completion(text, prompt=next_steps_prompt)
+
 
 if __name__ == "__main__":
     sample_prompt = """
@@ -131,5 +156,6 @@ What vendors did you look at last year?
     Input_Text: 
  "Client 4: required to put in So know, one of things like I said, we have and they have like what do we churn the customer. Right? We have a renewal is open, but if it doesn't close at the certain time we combat that churn. There's some ambiguity with regard to you know, when account that is churn. And then the other question, they'll probably have is on our revenue the process was such that either the person is not only here, we're just kinda grouping all of our revenue for a customer in online. And sending invoice where the customer may have a platform subscription an it's response retainer so else, all that was being bucket on online, so really can it's impossible for us to look at like, pull salesforce report four eight given customer product and see if there we're still a recognizing revenue on we don't track things at that level.",
     """
-    out = get_completion(txt, sample_prompt)
+    # out = get_completion(txt, sample_prompt)
+    out = get_summary_gpt(txt)
     print(out)

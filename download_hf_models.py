@@ -45,7 +45,6 @@ class BrioSummarizer():
                         #anecdotally, XSUM returns shorter summaries and CNN-DM returns multi points
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.max_length = 1024 if self.IS_CNNDM else 512 #CNN/DM dataset has longer summarization len
-        self.max_length = 512 #run out of memory if trying to compute w true max len
         self.model_name = 'Yale-LILY/brio-cnndm-uncased'
         self.name = "BRIO-cnndm-uncased"
 
