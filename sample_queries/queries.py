@@ -2,14 +2,14 @@ import json
 import requests
 
 
-# Configure URL and Desired Endpoint
-endpoint = '/summarize' #in base could pick from: ["summarize", "e-mlm", "e-lf", "keyphrase"]
+# Configure URL and Desired Endpoint -- one of the following;
 endpoint = '/extract_questions'
 endpoint = '/next_steps'
+
 url = "http://localhost:5003" + endpoint
 
 
-# Sample Text for Request
+# Sample Transcript for a Request
 sample_text = """
 Host 1: Hey, Thompson.
 
@@ -225,6 +225,9 @@ Client 2: Yes. Thank you guys.
 
 Host 1: Yeah. Thank you,
 """
+
+
+# Configure the Payload given our Sample Transcript
 payload = json.dumps({
   "input_text": sample_text
 })
@@ -233,8 +236,7 @@ headers = {
 }
 
 
-
 # POST the Request
 response = requests.request("POST", url, headers=headers, data=payload)
-print(response.text)
+print(response.text) #desired input-to-output
 
