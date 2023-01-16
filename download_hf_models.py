@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     # Summarization Model
     BRIO = BrioSummarizer()
-    # model_artifacts_download(BRIO)
+    model_artifacts_download(BRIO)
     txt = "TESTING !@#" * 320
 
     out = BRIO.sequence_splitter(txt)
